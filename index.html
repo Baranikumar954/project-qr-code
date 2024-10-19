@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR code generator</title>
+    <link type="image/png" sizes="16x16" rel="icon" href="https://img.icons8.com/material-rounded/24/FFFFFF/qr-code.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container-box">
+        <h1>QR CODE GENERATOR</h1>
+        <input type="text" id="text" placeholder="Enter text URL ">
+        <button onclick="generateQR()">
+            <b>Generate QR</b>
+        </button>
+        <div id="qrcode">
+
+        </div>
+        <a id="downloadLink" style="display:none;" download="qrcode.png" onclick="alertMessage()">Download QR Code</a>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <script>
+        function generateQR() {
+            <!-- const urlDisplay = document.getElementById("url").querySelector('b'); -->
+            const textt = document.getElementById("text").value;
+            const qrCodeContainer = document.getElementById("qrcode");
+        
+            // Clear the QR code container before generating a new one
+            qrCodeContainer.innerHTML = "";
+        
+            if (textt.trim() !== "") {
+                // Generate the new QR code
+                const qrCode = new QRCode(qrCodeContainer, {
+                    text: textt,
+                    width: 250,
+                    height: 250
+                });
+        
+                // Wait for the QR code to be generated and displayed in the DOM
+                setTimeout(() => {
+                    const qrImage = qrCodeContainer.querySelector('img');
+                    if (qrImage) {
+                        // Set the href of the download link to the image data
+                        const downloadLink = document.getElementById("downloadLink");
+                        downloadLink.href = qrImage.src; // Set the image URL
+                        downloadLink.style.display = "inline-block"; // Show the download link
+                    }
+                }, 10); // Slight delay to ensure QR image is generated
+            } else {
+                // Clear the displayed URL if the input is empty
+                urlDisplay.innerText = "";
+                document.getElementById("downloadLink").style.display = "none"; // Hide download link if no input
+            }
+        }
+        
+        function alertMessage()
+        {
+            alert("Your QR code is ready to download !");
+        }
+    </script>
+</body>
+</html>
